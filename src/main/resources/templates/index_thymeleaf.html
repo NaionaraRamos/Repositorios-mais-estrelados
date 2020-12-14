@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+<title>Most starred repositories on Github</title>
+</head>
+
+<body>
+<div class="container">
+
+	<h1 style="text-align:center; padding-top:50px;">Most starred repos per language</h1><br><br>
+
+	<form style="text-align:center" method="get" action="/">
+	<b style="font-size:20px;">Choose a language: </b> <select style="font-size:20px;" name="language">
+										 <option value=""></option><!--  th:text="${language}" -->
+										 <option th:value="${'Ada'}"        th:text="${'Ada'}"></option>
+										 <option th:value="${'C'}"          th:text="${'C'}"></option>
+										 <option th:value="${'Cobol'}"      th:text="${'Cobol'}"></option> 
+										 <option th:value="${'Crystal'}"    th:text="${'Crystal'}"></option>
+										 <option th:value="${'CSS'}"        th:text="${'CSS'}"></option>
+										 <option th:value="${'Delphi'}"     th:text="${'Delphi'}"></option>
+										 <option th:value="${'Elixir'}"     th:text="${'Elixir'}"></option>
+										 <option th:value="${'Fortran'}"    th:text="${'Fortran'}"></option>
+										 <option th:value="${'Go'}"         th:text="${'Go'}"></option>
+										 <option th:value="${'HTML'}"       th:text="${'HTML'}"></option>
+										 <option th:value="${'Java'}"       th:text="${'Java'}"></option>
+										 <option th:value="${'JavaScript'}" th:text="${'JavaScript'}"></option>
+										 <option th:value="${'Julia'}"      th:text="${'Julia'}"></option>
+										 <option th:value="${'Kotlin'}"     th:text="${'Kotlin'}"></option>
+										 <option th:value="${'Lua'}"        th:text="${'Lua'}"></option>
+										 <option th:value="${'Perl'}"       th:text="${'Perl'}"></option>
+										 <option th:value="${'PHP'}"        th:text="${'PHP'}"></option>
+										 <option th:value="${'Python'}"     th:text="${'Python'}"></option>
+										 <option th:value="${'Ruby'}"       th:text="${'Ruby'}"></option>
+										 <option th:value="${'Scala'}"      th:text="${'Scala'}"></option>
+										 <option th:value="${'Shell'}"      th:text="${'Shell'}"></option>
+										 <option th:value="${'SQL'}"        th:text="${'SQL'}"></option>
+										 <option th:value="${'Swift'}"      th:text="${'Swift'}"></option>
+										 <option th:value="${'TypeScript'}" th:text="${'TypeScript'}"></option>
+									 </select>
+									 <button type="submit" class="btn btn-primary" style="font-size:15px;">Search</button>
+	
+	</form><br><br>
+	<div>
+	
+	<nav th:if="${itemsPage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}" style="text-align:center">
+		<!-- <ul class="pagination pg-blue">
+		<li class="page-item"> -->
+		<span><a class="page-link pagination pg-blue" th:href="@{/(language=${language}, page=${pageNumber}, per_page=${itemsPage.size})}"
+		 	th:text="${pageNumber}" th:class="${pageNumber==itemsPage.number} ? active"
+		 	style="font-size:20px; display: inline-block"></a></span>
+		 	<!-- <a href="#">A</a>
+		 	<a href="#">B</a> -->
+		<!-- </li>
+		</ul> -->
+	</nav><br>
+		<table border="1px" style="text-align:center; align-content: center; margin: auto">
+			<tr>
+				<!-- <th scope="col" style="width:60px">#</th> -->
+				<th scope="col" style="width:100px">Avatar</th>
+				<th scope="col" style="width:600px">Full Name</th>
+				<th scope="col" style="width:80px">Stars</th>
+				<th scope="col" style="width:80px">Forks</th>
+			</tr>
+			
+			<tr scope="row" th:each="item, index: ${items}">
+			
+				<!-- <td th:text="${index?.index} + 1"></td> -->
+				<td><img th:src="${item?.owner.avatar_url}" width="50px" height="50px"></td>
+				<td style="width:370px"><strong th:text="${item?.full_name}"></strong></td>
+				<td style="width:70px"><strong th:text="${item?.stargazers_count}"></strong></td>
+				<td style="width:70px"><strong th:text="${item?.forks_count}"></strong></td>
+			
+			</tr>
+		</table>
+	</div>
+</div>
+
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+</body>
