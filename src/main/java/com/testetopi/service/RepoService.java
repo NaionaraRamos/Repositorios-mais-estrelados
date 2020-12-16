@@ -22,8 +22,8 @@ public class RepoService {
 	RestTemplate restTemplate = new RestTemplate();
 	ResponseEntity<Repo> repo;
 	List<Items> items = new ArrayList<>();
-	List<Items> listaFinal = new ArrayList<>();
-	List<Items> listItems = getListaFinal();
+	List<Items> finalList = new ArrayList<>();
+	List<Items> listItems = getFinalList();
 
 	public UriComponents fetchByLanguage(String language, int page) {
 		
@@ -41,14 +41,14 @@ public class RepoService {
 		
 		if(url.contains(":&")) {
 			items = null;
-			listaFinal.clear();
+			finalList.clear();
 		}
 		
 		
 		if(items != null) {
-			listaFinal.clear();
+			finalList.clear();
 			for(int i = 0; i < items.size(); i++) {
-				listaFinal.add(items.get(i));
+				finalList.add(items.get(i));
 			}	
 		}
 		
@@ -63,12 +63,12 @@ public class RepoService {
 		this.items = items;
 	}
 	
-	public List<Items> getListaFinal() {
-		return listaFinal;
+	public List<Items> getFinalList() {
+		return finalList;
 	}
 
-	public void setListaFinal(List<Items> listaFinal) {
-		this.listaFinal = listaFinal;
+	public void setFinalList(List<Items> finalList) {
+		this.finalList = finalList;
 	}
 	
 	public Page<Items> pagination(Pageable pageable, String language){
