@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,44 +27,33 @@ public class ControllerRepo {
 	public ModelAndView fetchRepos(Model model,
 			@RequestParam("page") Optional<Integer> page,
 			@RequestParam("per_page") Optional<Integer> size,
-			@ModelAttribute("language") String language
-			//, Pageable pageable
-			){
+			@ModelAttribute("language") String language){
 		
 		ModelAndView mv = new ModelAndView();
 		
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(10);
 		
-		Page<Items> itemsPage = repoService.pagination(PageRequest.of(currentPage, pageSize), language);
+		repoService.fetchByLanguage(language, currentPage);
+		items = repoService.getListItems();
+		
+		Page<Items> itemsPage = repoService.pagination(PageRequest.of((currentPage)-1, pageSize), language);
 		
 		int totalPages = itemsPage.getTotalPages();
 		
 		if(totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-			System.out.println("Page numbers: " + pageNumbers);
 			model.addAttribute("pageNumbers", pageNumbers);
-		}
+		}	
 		
 		model.addAttribute("language", language);
 		model.addAttribute("itemsPage", itemsPage);
 		
-		repoService.fetchByLanguage(language, currentPage);
-		//items = repoService.getListaFinal();
-//		items = repoService.getListItems();
-		items = repoService.getItems();
-		
-		System.out.println(items);
 		
 		if(language != null) {
 			mv.addObject("items", items);
 		}
 		
-		//System.out.println("Page: " + page);
-		//System.out.println("Size: " + size);
-//		System.out.println("Current Page: " + currentPage);
-//		System.out.println("Page Size: " + pageSize);
-		//System.out.println("Items Page: " + itemsPage);
 		try {
 			mv.setViewName("index_thymeleaf");
 		} catch(Exception e) {
@@ -74,9 +62,4 @@ public class ControllerRepo {
 		
 		return mv;
 	}
-//	
-//	@GetMapping("/error")
-//	public String erro() {
-//		return "/error";
-//	}
 }

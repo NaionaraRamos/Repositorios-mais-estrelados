@@ -33,22 +33,18 @@ public class RepoService {
 				.queryParam("q", "language:" + language)
 				.queryParam("sort", "stars")
 				.queryParam("page", page)
-				//.queryParam("per_page", per_page)
 				.build();
 		
 		String url = uri.toUriString();
-		System.out.println(url);
 		repo = restTemplate.getForEntity(url, Repo.class);
-		
 		items = repo.getBody().getItems();
-		System.out.println(items.size());
 		
 		if(url.contains(":&")) {
 			items = null;
 			listaFinal.clear();
 		}
 		
-//		
+		
 		if(items != null) {
 			listaFinal.clear();
 			for(int i = 0; i < items.size(); i++) {
